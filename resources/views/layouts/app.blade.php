@@ -140,7 +140,7 @@
                     <li class="side-nav-title">Main</li>
 
 
-                    @if (Auth::user()->level == 'admin')
+                    @if (Auth::user()->role == 'admin')
                         <li class="side-nav-item">
                             <a href="{{ route('admin.dashboard') }}" class="side-nav-link">
                                 <i class="ri-home-3-line"></i>
@@ -148,23 +148,56 @@
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="{{ route('admin.divisi') }}" class="side-nav-link">
-                                <i class="ri-home-3-line"></i>
-                                <span> Satuan Kerja </span>
+                            <a href="{{ route('admin.dataBarang') }}" class="side-nav-link">
+                                <i class="ri-layout-grid-fill"></i>
+                                <span> Data Barang </span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="{{ route('admin.user') }}" class="side-nav-link">
-                                <i class="ri-home-3-line"></i>
-                                <span> User </span>
+                            <a href="{{ route('admin.dataKonsumen') }}" class="side-nav-link">
+                                <i class="ri-group-fill"></i>
+                                <span> Data Konsumen </span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="{{ route('admin.kasus') }}" class="side-nav-link">
-                                <i class="ri-home-3-line"></i>
-                                <span> Kasus </span>
+                            <a href="{{ route('admin.dataPenjualan') }}" class="side-nav-link">
+                                <i class="ri-price-tag-3-fill"></i>
+                                <span> Data Penjualan </span>
                             </a>
                         </li>
+                        <li class="side-nav-item">
+                            <a href="{{ route('admin.dataPembelian') }}" class="side-nav-link">
+                                <i class="ri-shopping-cart-2-fill"></i>
+                                <span> Data Pembelian </span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{ route('admin.dataAdmin') }}" class="side-nav-link">
+                                <i class="ri-home-3-line"></i>
+                                <span> Data Admin </span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a data-bs-toggle="collapse" href="#sidebarForms" aria-expanded="false" aria-controls="sidebarForms" class="side-nav-link">
+                                <i class="ri-user-settings-fill"></i>
+                                <span> Laporan </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarForms">
+                                <ul class="side-nav-second-level">
+                                    <li>
+                                        <a href="form-elements.html">Laporan Konsumen</a>
+                                    </li>
+                                    <li>
+                                        <a href="form-elements.html">Laporan Penjualan</a>
+                                    </li>
+                                    <li>
+                                        <a href="form-elements.html">Laporan Pemasukan</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
                     @elseif (Auth::user()->level == 'user')
                     <li class="side-nav-item">
                         <a href="{{ route('user.dashboard') }}" class="side-nav-link">
