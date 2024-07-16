@@ -88,33 +88,41 @@ class AdminController extends Controller
     // Method untuk menyimpan data konsumen
     public function storeKonsumen(Request $request)
     {
-        // Validasi data
         $request->validate([
-            'kode_konsumen' => 'required|string|max:255|unique:konsumen',
+            'kode_konsumen' => 'required|string|max:255',
             'nama_konsumen' => 'required|string|max:255',
             'alamat' => 'required|string',
             'no_telp' => 'required|string|max:15',
-            'ktp' => 'required|file|mimes:jpeg,png,jpg|max:2048',
-            'kartu_kendali' => 'required|file|mimes:jpeg,png,jpg|max:2048',
+            'ktp' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'kk' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'kartu_kendali' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // Simpan file KTP dan Kartu Kendali
-        $ktpPath = $request->file('ktp')->store('ktp');
-        $kartuKendaliPath = $request->file('kartu_kendali')->store('kartu_kendali');
+        $konsumen = new Konsumen();
+        $konsumen->kode_konsumen = $request->kode_konsumen;
+        $konsumen->nama_konsumen = $request->nama_konsumen;
+        $konsumen->alamat = $request->alamat;
+        $konsumen->status = 'active';
+        $konsumen->no_telp = $request->no_telp;
 
-        // Simpan data konsumen
-        Konsumen::create([
-            'kode_konsumen' => $request->kode_konsumen,
-            'nama_konsumen' => $request->nama_konsumen,
-            'alamat' => $request->alamat,
-            'no_telp' => $request->no_telp,
-            'ktp' => $ktpPath,
-            'kartu_kendali' => $kartuKendaliPath,
-            'status' => 'active',
-        ]);
+        if ($request->hasFile('ktp')) {
+            $ktpPath = $request->file('ktp')->store('public/ktp');
+            $konsumen->ktp = str_replace('public/', 'storage/', $ktpPath);
+        }
 
-        // Redirect ke halaman data konsumen dengan pesan sukses
-        return redirect()->route('admin.dataKonsumen')->with('success', 'Konsumen berhasil ditambahkan.');
+        if ($request->hasFile('kk')) {
+            $kkPath = $request->file('kk')->store('public/kk');
+            $konsumen->kk = str_replace('public/', 'storage/', $kkPath);
+        }
+
+        if ($request->hasFile('kartu_kendali')) {
+            $kartuKendaliPath = $request->file('kartu_kendali')->store('public/kartu_kendali');
+            $konsumen->kartu_kendali = str_replace('public/', 'storage/', $kartuKendaliPath);
+        }
+
+        $konsumen->save();
+
+        return redirect()->route('admin.dataKonsumen')->with('success', 'Konsumen berhasil ditambahkan');
     }
 
 
@@ -133,6 +141,7 @@ class AdminController extends Controller
             'alamat' => 'required|string',
             'no_telp' => 'required|string|max:15',
             'ktp' => 'nullable|file|mimes:jpg,png,jpeg,pdf',
+            'kk' => 'nullable|file|mimes:jpg,png,jpeg,pdf',
             'kartu_kendali' => 'nullable|file|mimes:jpg,png,jpeg,pdf',
         ]);
 
@@ -147,14 +156,20 @@ class AdminController extends Controller
 
         // Update file KTP jika ada
         if ($request->hasFile('ktp')) {
-            $ktpPath = $request->file('ktp')->store('ktp', 'public');
-            $konsumen->ktp = $ktpPath;
+            $ktpPath = $request->file('ktp')->store('public/ktp');
+            $konsumen->ktp = str_replace('public/', 'storage/', $ktpPath);
+        }
+
+        // Update file KK jika ada
+        if ($request->hasFile('kk')) {
+            $kkPath = $request->file('kk')->store('public/kk');
+            $konsumen->kk = str_replace('public/', 'storage/', $kkPath);
         }
 
         // Update file Kartu Kendali jika ada
         if ($request->hasFile('kartu_kendali')) {
-            $kartuKendaliPath = $request->file('kartu_kendali')->store('kartu_kendali', 'public');
-            $konsumen->kartu_kendali = $kartuKendaliPath;
+            $kartuKendaliPath = $request->file('kartu_kendali')->store('public/kartu_kendali');
+            $konsumen->kartu_kendali = str_replace('public/', 'storage/', $kartuKendaliPath);
         }
 
         // Simpan perubahan
@@ -163,7 +178,6 @@ class AdminController extends Controller
         // Redirect ke halaman data konsumen dengan pesan sukses
         return redirect()->route('admin.dataKonsumen')->with('success', 'Data konsumen berhasil diupdate.');
     }
-
     public function deleteKonsumen($id)
     {
         $konsumen = Konsumen::find($id);

@@ -33,6 +33,10 @@
                             <input type="file" class="form-control" id="ktp" name="ktp" required>
                         </div>
                         <div class="form-group">
+                            <label for="kk">KK</label>
+                            <input type="file" class="form-control" id="kk" name="kk" required>
+                        </div>
+                        <div class="form-group">
                             <label for="kartu_kendali">Kartu Kendali</label>
                             <input type="file" class="form-control" id="kartu_kendali" name="kartu_kendali" required>
                         </div>

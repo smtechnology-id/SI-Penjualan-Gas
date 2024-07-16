@@ -14,8 +14,9 @@
                     <th>Nama Konsumen</th>
                     <th>Alamat</th>
                     <th>No Telp</th>
-                    <th>No KK</th>
-                    <th>Status</th>
+                    <th>KK</th>
+                    <th>KTP</th>
+                    <th>Kartu Kendali</th>
                     <th>Aksi</th>
                 </thead>
                 <tbody>
@@ -26,8 +27,9 @@
                         <td>{{ $konsumen->nama_konsumen }}</td>
                         <td>{{ $konsumen->alamat }}</td>
                         <td>{{ $konsumen->no_telp }}</td>
-                        <td>{{ $konsumen->no_kk }}</td>
-                        <td>{{ $konsumen->status }}</td>
+                        <td><a href="{{ asset($konsumen->kk) }}" target="_blank"><img src="{{ asset($konsumen->kk) }}" alt="" srcset="" style="width: 100px"></a></td>
+                        <td><a href="{{ asset($konsumen->ktp) }}" target="_blank"><img src="{{ asset($konsumen->ktp) }}" alt="" srcset="" style="width: 100px"></a></td>
+                        <td><a href="{{ asset($konsumen->kartu_kendali) }}" target="_blank"><img src="{{ asset($konsumen->kartu_kendali) }}" alt="" srcset="" style="width: 100px"></a></td>
                         <td>
                             <a href="{{ route('admin.editKonsumen', $konsumen->id) }}" class="btn btn-secondary">Update</a>
                             <a href="{{ route('admin.deleteKonsumen', $konsumen->id) }}" class="btn btn-danger">Delete</a>

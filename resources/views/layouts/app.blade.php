@@ -36,27 +36,7 @@
                 <div class="d-flex align-items-center gap-1">
 
                     <!-- Topbar Brand Logo -->
-                    <div class="logo-topbar">
-                        <!-- Logo light -->
-                        <a href="" class="logo-light">
-                            <span class="logo-lg">
-                                <img src="{{ asset('assets/images/logo.png') }}" alt="logo">
-                            </span>
-                            <span class="logo-sm">
-                                <img src="{{ asset('assets/images/logo-sm.png') }}" alt="small logo">
-                            </span>
-                        </a>
-
-                        <!-- Logo Dark -->
-                        <a href="" class="logo-dark">
-                            <span class="logo-lg">
-                                <img src="{{ asset('assets/images/logo-dark.png') }}" alt="dark logo">
-                            </span>
-                            <span class="logo-sm">
-                                <img src="{{ asset('assets/images/logo-sm.png') }}" alt="small logo">
-                            </span>
-                        </a>
-                    </div>
+                    
 
                     <!-- Sidebar Menu Toggle Button -->
                     <button class="button-toggle-menu">
@@ -87,7 +67,7 @@
                         <a class="nav-link dropdown-toggle arrow-none nav-user" data-bs-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="account-user-avatar">
-                                <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="user-image"
+                                <img src="{{ asset('assets/images/user.jpg') }}" style="width: 40px; height: 40px; object-fit: cover" alt="user-image"
                                     width="32" class="rounded-circle">
                             </span>
                             <span class="d-lg-block d-none">
@@ -109,35 +89,19 @@
         <!-- ========== Topbar End ========== -->
 
 
+
         <!-- ========== Left Sidebar Start ========== -->
         <div class="leftside-menu">
 
             <!-- Brand Logo Light -->
-            <a href="" class="logo logo-light">
-                <span class="logo-lg">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="logo">
-                </span>
-                <span class="logo-sm">
-                    <img src="{{ asset('assets/images/logo-sm.png') }}" alt="small logo">
-                </span>
-            </a>
-
-            <!-- Brand Logo Dark -->
-            <a href="" class="logo logo-dark">
-                <span class="logo-lg">
-                    <img src="{{ asset('assets/images/logo-dark.png') }}" alt="dark logo">
-                </span>
-                <span class="logo-sm">
-                    <img src="{{ asset('assets/images/logo-sm.png') }}" alt="small logo">
-                </span>
-            </a>
+            
 
             <!-- Sidebar -left -->
             <div class="h-100" id="leftside-menu-container" data-simplebar>
                 <!--- Sidemenu -->
                 <ul class="side-nav">
 
-                    <li class="side-nav-title">Main</li>
+                    <li class="side-nav-title" >Pangkalan Gas LPG Eko Sumanto</li>
 
 
                     @if (Auth::user()->role == 'admin')
@@ -145,12 +109,6 @@
                             <a href="{{ route('admin.dashboard') }}" class="side-nav-link">
                                 <i class="ri-home-3-line"></i>
                                 <span> Dashboard </span>
-                            </a>
-                        </li>
-                        <li class="side-nav-item">
-                            <a href="{{ route('admin.tentang') }}" class="side-nav-link">
-                                <i class="ri-info-line"></i>
-                                <span> Tentang </span>
                             </a>
                         </li>
                         <li class="side-nav-item">

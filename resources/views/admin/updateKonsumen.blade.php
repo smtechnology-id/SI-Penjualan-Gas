@@ -31,14 +31,27 @@
                         </div>
                         <div class="form-group">
                             <label for="ktp">KTP</label>
-                            <input type="file" class="form-control" id="ktp" name="ktp" value="{{ $konsumen->ktp }}">
+                            <input type="file" class="form-control" id="ktp" name="ktp">
+                            @if($konsumen->ktp)
+                                <a href="{{ asset($konsumen->ktp) }}" target="_blank">Lihat KTP</a>
+                            @endif
                         </div>
                         <div class="form-group">
                             <label for="kartu_kendali">Kartu Kendali</label>
-                            <input type="file" class="form-control" id="kartu_kendali" name="kartu_kendali" value="{{ $konsumen->kartu_kendali }}">
+                            <input type="file" class="form-control" id="kartu_kendali" name="kartu_kendali">
+                            @if($konsumen->kartu_kendali)
+                                <a href="{{ asset($konsumen->kartu_kendali) }}" target="_blank">Lihat Kartu Kendali</a>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="kk">Kartu Keluarga (KK)</label>
+                            <input type="file" class="form-control" id="kk" name="kk">
+                            @if($konsumen->kk)
+                                <a href="{{ asset($konsumen->kk) }}" target="_blank">Lihat Kartu Keluarga</a>
+                            @endif
                         </div>
                         <button type="submit" class="btn btn-primary">Update Konsumen</button>
-                    </form>
+                    </form> 
                 </div>
             </div>
         </div>
