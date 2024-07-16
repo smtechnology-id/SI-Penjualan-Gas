@@ -6,8 +6,7 @@
         <div class="container">
             <h3>Data Penjualan</h3>
             <hr>
-            <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#addDivision">Tambah
-                Penjualan</button>
+           <a href="{{ route('admin.addPenjualan') }}" class="btn btn-primary mb-2">Tambah Penjualan</a>
             <table class="table table-borderless">
                 <thead>
                     <th>No</th>
@@ -22,21 +21,23 @@
                     <th>Aksi</th>
                 </thead>
                 <tbody>
+                    @foreach($penjualans as $penjualan)
                     <tr>
-                        <td>1</td>
-                        <td>#123</td>
-                        <td>12 - 12 - 2024</td>
-                        <td>Rudi</td>
-                        <td>Gas Lpg 3 Kg</td>
-                        <td>12</td>
-                        <td>Rp. 22.000</td>
-                        <td>Rp. 264.000</td>
-                        <td>Lunas</td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $penjualan->kode_penjualan }}</td>
+                        <td>{{ $penjualan->tanggal }}</td>
+                        <td>{{ $penjualan->konsumen->nama_konsumen }}</td>
+                        <td>{{ $penjualan->barang->nama_barang }}</td>
+                        <td>{{ $penjualan->jumlah }}</td>
+                        <td>Rp {{ number_format($penjualan->barang->harga_jual, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($penjualan->total, 0, ',', '.') }}</td>
+                        <td>{{ $penjualan->status }}</td>
                         <td>
-                            <a href="" class="btn btn-secondary">Update</a>
-                            <a href="" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('admin.updatePenjualan', $penjualan->id) }}" class="btn btn-secondary">Update</a>
+                            <a href="{{ route('admin.deletePenjualan', $penjualan->id) }}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

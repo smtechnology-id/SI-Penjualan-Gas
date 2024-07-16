@@ -29,5 +29,6 @@ class Konsumen extends Model
         'ktp',
         'kartu_kendali',
         'status',
+        'kk'
     ];
 }

@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Barang;
 use App\Models\Konsumen;
+use App\Models\Pembelian;
+use App\Models\Penjualan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        $barang = Barang::all();
+        return view('admin.dashboard', compact('barang'));
+    }
+    public function tentang()
+    {
+        return view('admin.tentang');
     }
 
     public function dataBarang()
@@ -68,20 +77,7 @@ class AdminController extends Controller
         return view('admin.dataKonsumen', compact('konsumens'));
     }
 
-    public function dataPenjualan()
-    {
-        return view('admin.dataPenjualan');
-    }
 
-    public function dataPembelian()
-    {
-        return view('admin.dataPembelian');
-    }
-
-    public function dataAdmin()
-    {
-        return view('admin.dataAdmin');
-    }
 
     // Method untuk menampilkan form tambah konsumen
     public function showAddKonsumenForm()
@@ -119,5 +115,325 @@ class AdminController extends Controller
 
         // Redirect ke halaman data konsumen dengan pesan sukses
         return redirect()->route('admin.dataKonsumen')->with('success', 'Konsumen berhasil ditambahkan.');
+    }
+
+
+    // Konsumen
+    public function editKonsumen($id)
+    {
+        $konsumen = Konsumen::where('id', $id)->first();
+        return view('admin.updateKonsumen', compact('konsumen'));
+    }
+    public function updateKonsumen(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'kode_konsumen' => 'required|string|max:255',
+            'nama_konsumen' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'no_telp' => 'required|string|max:15',
+            'ktp' => 'nullable|file|mimes:jpg,png,jpeg,pdf',
+            'kartu_kendali' => 'nullable|file|mimes:jpg,png,jpeg,pdf',
+        ]);
+
+        // Temukan konsumen berdasarkan ID
+        $konsumen = Konsumen::find($request->id);
+
+        // Update data konsumen
+        $konsumen->kode_konsumen = $request->kode_konsumen;
+        $konsumen->nama_konsumen = $request->nama_konsumen;
+        $konsumen->alamat = $request->alamat;
+        $konsumen->no_telp = $request->no_telp;
+
+        // Update file KTP jika ada
+        if ($request->hasFile('ktp')) {
+            $ktpPath = $request->file('ktp')->store('ktp', 'public');
+            $konsumen->ktp = $ktpPath;
+        }
+
+        // Update file Kartu Kendali jika ada
+        if ($request->hasFile('kartu_kendali')) {
+            $kartuKendaliPath = $request->file('kartu_kendali')->store('kartu_kendali', 'public');
+            $konsumen->kartu_kendali = $kartuKendaliPath;
+        }
+
+        // Simpan perubahan
+        $konsumen->save();
+
+        // Redirect ke halaman data konsumen dengan pesan sukses
+        return redirect()->route('admin.dataKonsumen')->with('success', 'Data konsumen berhasil diupdate.');
+    }
+
+    public function deleteKonsumen($id)
+    {
+        $konsumen = Konsumen::find($id);
+        if ($konsumen) {
+            $konsumen->delete();
+            return redirect()->route('admin.dataKonsumen')->with('success', 'Konsumen berhasil dihapus');
+        } else {
+            return redirect()->route('admin.dataKonsumen')->with('error', 'Konsumen tidak ditemukan');
+        }
+    }
+
+    // Penjualan
+    public function dataPenjualan()
+    {
+        $penjualans = Penjualan::all();
+        return view('admin.dataPenjualan', compact('penjualans'));
+    }
+
+    public function addPenjualan() {
+        $barangs = Barang::all();
+        $konsumens = Konsumen::all();
+        return view('admin.addPenjualan', compact('barangs', 'konsumens'));
+    }
+
+    public function addPenjualanPost(Request $request)
+    {
+        $request->validate([
+            'kode_penjualan' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+            'konsumen_id' => 'required|integer',
+            'barang_id' => 'required|integer',
+            'jumlah' => 'required|integer|min:1',
+        ]);
+
+        $barang = Barang::findOrFail($request->barang_id);
+
+        // Cek apakah stok barang cukup
+        if ($barang->stok_barang < $request->jumlah) {
+            return redirect()->route('admin.dataPenjualan')->with('error', 'Stok barang tidak cukup.');
+        }
+
+        $total_harga = $barang->harga_jual * $request->jumlah;
+
+        Penjualan::create([
+            'kode_penjualan' => $request->kode_penjualan,
+            'tanggal' => $request->tanggal,
+            'konsumen_id' => $request->konsumen_id,
+            'barang_id' => $request->barang_id,
+            'jumlah' => $request->jumlah,
+            'total' => $total_harga,
+            'status' => 'pending',
+        ]);
+
+        // Update stok barang
+        $barang->stok_barang -= $request->jumlah;
+        $barang->save();
+
+        return redirect()->route('admin.dataPenjualan')->with('success', 'Penjualan berhasil ditambahkan dan stok barang diperbarui.');
+    }
+
+    public function updatePenjualan($id)
+    {
+        $konsumens = Konsumen::all();
+        $barangs = Barang::all();
+        $penjualan = Penjualan::where('id', $id)->first();
+        return view('admin.updatePenjualan', compact('penjualan', 'konsumens', 'barangs'));
+    }
+
+    public function updatePenjualanPost(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'kode_penjualan' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+            'konsumen_id' => 'required|integer|exists:konsumen,id',
+            'barang_id' => 'required|integer|exists:barang,id',
+            'jumlah' => 'required|integer|min:1',
+        ]);
+
+        // Temukan penjualan berdasarkan ID
+        $penjualan = Penjualan::findOrFail($request->id);
+
+        // Update data penjualan
+        $penjualan->kode_penjualan = $request->kode_penjualan;
+        $penjualan->tanggal = $request->tanggal;
+        $penjualan->konsumen_id = $request->konsumen_id;
+        $penjualan->barang_id = $request->barang_id;
+        $penjualan->jumlah = $request->jumlah;
+        $penjualan->save();
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('admin.dataPenjualan')->with('success', 'Data penjualan berhasil diupdate.');
+    }
+
+    public function deletePenjualan($id)
+    {
+        $penjualan = Penjualan::find($id);
+
+        if ($penjualan) {
+            $penjualan->delete();
+            return redirect()->route('admin.dataPenjualan')->with('success', 'Data penjualan berhasil dihapus.');
+        } else {
+            return redirect()->route('admin.dataPenjualan')->with('error', 'Data penjualan tidak ditemukan.');
+        }
+    }
+
+
+    // Pembelian
+    public function dataPembelian()
+    {
+        $pembelians = Pembelian::all(); 
+        return view('admin.dataPembelian', compact('pembelians'));
+    }
+    public function addPembelian() {
+        $barangs = Barang::all();
+        return view('admin.addPembelian', compact('barangs'));
+    }
+
+    public function addPembelianPost(Request $request)
+    {
+        $request->validate([
+            'kode_pembelian' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+            'barang_id' => 'required|integer|exists:barang,id',
+            'jumlah' => 'required|integer|min:1',
+        ]);
+
+        $pembelian = new Pembelian();
+        $pembelian->kode_pembelian = $request->kode_pembelian;
+        $pembelian->tanggal = $request->tanggal;
+        $pembelian->barang_id = $request->barang_id;
+        $pembelian->jumlah = $request->jumlah;
+        $pembelian->save();
+
+        // Update stok barang
+        $barang = Barang::find($request->barang_id);
+        $barang->stok_barang += $request->jumlah;
+        $barang->save();
+
+        return redirect()->route('admin.dataPembelian')->with('success', 'Pembelian berhasil ditambahkan dan stok barang diperbarui');
+    }
+    public function updatePembelian($id) {
+        $barangs = Barang::all();
+        $pembelian = Pembelian::where('id', $id)->first();
+        return view('admin.updatePembelian', compact('barangs', 'pembelian'));
+    }
+
+    public function updatePembelianPost(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'kode_pembelian' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+            'barang_id' => 'required|integer',
+            'jumlah' => 'required|integer|min:1',
+        ]);
+
+        // Temukan pembelian berdasarkan ID
+        $pembelian = Pembelian::find($request->id);
+
+        // Update data pembelian
+        $pembelian->kode_pembelian = $request->kode_pembelian;
+        $pembelian->tanggal = $request->tanggal;
+        $pembelian->barang_id = $request->barang_id;
+        $pembelian->jumlah = $request->jumlah;
+
+        // Simpan perubahan
+        $pembelian->save();
+
+        // Redirect ke halaman data pembelian dengan pesan sukses
+        return redirect()->route('admin.dataPembelian')->with('success', 'Data pembelian berhasil diupdate.');
+    }
+
+    public function deletePembelian($id)
+    {
+        $pembelian = Pembelian::find($id);
+        if ($pembelian) {
+            $pembelian->delete();
+            return redirect()->route('admin.dataPembelian')->with('success', 'Data pembelian berhasil dihapus.');
+        } else {
+            return redirect()->route('admin.dataPembelian')->with('error', 'Data pembelian tidak ditemukan.');
+        }
+    }
+
+    public function dataAdmin()
+    {
+        $users = User::where('role', 'admin')->get();
+        return view('admin.dataAdmin', compact('users'));
+    }
+
+    public function addAdmin()
+    {
+        return view('admin.addUser');
+    }
+
+    public function addAdminPost(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role = 'admin';
+        $user->save();
+
+        return redirect()->route('admin.dataAdmin')->with('success', 'Admin berhasil ditambahkan');
+    }
+    public function updateAdmin($id) {
+        $admin = User::where('id', $id)->first();
+        return view('admin.updateUser', compact('admin'));
+    }
+    
+    public function updateAdminPost(Request $request)
+    {
+        $id = $request->id;
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+        
+        // Temukan admin berdasarkan ID
+        $admin = User::findOrFail($id);
+
+        // Update data admin
+        $admin->name = $request->input('name');
+        $admin->email = $request->input('email');
+
+        // Jika password diisi, update password
+        if ($request->filled('password')) {
+            $admin->password = Hash::make($request->input('password'));
+        }
+
+        // Simpan perubahan
+        $admin->save();
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('admin.dataAdmin')->with('success', 'Data admin berhasil diperbarui.');
+    }
+
+    public function deleteAdmin($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->delete();
+            return redirect()->route('admin.dataAdmin')->with('success', 'Admin berhasil dihapus');
+        } else {
+            return redirect()->route('admin.dataAdmin')->with('error', 'Admin tidak ditemukan');
+        }
+    }
+
+    public function laporanPenjualan() {
+        $penjualans = Penjualan::all();
+        $tanggal_sekarang = date('d F Y');
+        return view('admin.laporanPenjualan', compact('penjualans', 'tanggal_sekarang'));
+    }
+    public function laporanKonsumen() {
+        $konsumens = Konsumen::all();
+        $tanggal_sekarang = date('d F Y');
+        return view('admin.laporanKonsumen', compact('konsumens', 'tanggal_sekarang'));
+    }
+    public function laporanPembelian() {
+        $pembelians = Pembelian::all();
+        $tanggal_sekarang = date('d F Y');
+        return view('admin.laporanPembelian', compact('pembelians', 'tanggal_sekarang'));
     }
 }

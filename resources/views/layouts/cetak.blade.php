@@ -5,7 +5,8 @@
     <meta charset="utf-8" />
     <title>Dashboard Admin || SIPRAKTIF</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Sistem Informasi Penanganan Penghentian Penuntutan Berdasarkan Keadilan Restoratif" name="description" />
+    <meta content="Sistem Informasi Penanganan Penghentian Penuntutan Berdasarkan Keadilan Restoratif"
+        name="description" />
     <meta content="Smtechnology.id" name="author" />
 
     <!-- App favicon -->
@@ -148,12 +149,6 @@
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="{{ route('admin.tentang') }}" class="side-nav-link">
-                                <i class="ri-info-line"></i>
-                                <span> Tentang </span>
-                            </a>
-                        </li>
-                        <li class="side-nav-item">
                             <a href="{{ route('admin.dataBarang') }}" class="side-nav-link">
                                 <i class="ri-layout-grid-fill"></i>
                                 <span> Data Barang </span>
@@ -184,7 +179,8 @@
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#sidebarForms" aria-expanded="false" aria-controls="sidebarForms" class="side-nav-link">
+                            <a data-bs-toggle="collapse" href="#sidebarForms" aria-expanded="false"
+                                aria-controls="sidebarForms" class="side-nav-link">
                                 <i class="ri-user-settings-fill"></i>
                                 <span> Laporan </span>
                                 <span class="menu-arrow"></span>
@@ -198,7 +194,7 @@
                                         <a href="{{ route('admin.laporanPenjualan') }}">Laporan Penjualan</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('admin.laporanPembelian') }}">Laporan Pembelian</a>
+                                        <a href="{{ route('admin.laporanPemasukan') }}">Laporan Pemasukan</a>
                                     </li>
                                 </ul>
                             </div>
@@ -230,36 +226,51 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box">
-                                <div class="container-fluid mt-3">
-                                    <div class="card">
-                                        <div class="card-body py-2">
-                                            @if ($errors->any())
-                                                <div class="alert alert-danger">
-                                                    <ul>
-                                                        @foreach ($errors->all() as $error)
-                                                            <li>{{ $error }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                            @endif
-                                            @if (session('success'))
-                                                <div class="alert alert-success">
-                                                    {{ session('success') }}
-                                                </div>
-                                            @endif
-                                            @if (session('error'))
-                                                <div class="alert alert-danger">
-                                                    {{ session('error') }}
-                                                </div>
-                                            @endif
-                                            @yield('content')
-                                        </div>
-                                    </div>
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Velonic</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
+                                        <li class="breadcrumb-item active">Invoice</li>
+                                    </ol>
                                 </div>
+                                <h4 class="page-title">@yield('title')</h4>
                             </div>
                         </div>
                     </div>
                     <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="text-center">Pangkalan Gas LPG Eko Sumanto</h3>
+                                    <p class="text-center">Alamat</p>
+                                    <p class="text-center">No Telp</p>
+                                    <p class="text-center">{{ $tanggal_sekarang }}</p>
+                                    <br><br>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            @yield('content')
+                                        </div> <!-- end col -->
+                                    </div>
+                                    <!-- end row -->
+
+
+                                    <!-- end row-->
+
+                                    <div class="d-print-none mt-4">
+                                        <div class="text-center">
+                                            <a href="javascript:window.print()" class="btn btn-primary"><i
+                                                    class="ri-printer-line"></i> Print</a>
+                                        </div>
+                                    </div>
+                                    <!-- end buttons -->
+
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card -->
+                        </div> <!-- end col-->
+                    </div>
+                    <!-- end row -->
 
                 </div> <!-- container -->
 
@@ -272,7 +283,7 @@
                         <div class="col-12 text-center">
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> Developed With Love By SMTechnology.id</b>
+                            </script> © Velonic - Theme by <b>Techzaa</b>
                         </div>
                     </div>
                 </div>
@@ -286,19 +297,13 @@
         <!-- ============================================================== -->
 
     </div>
-    
+
     <!-- END wrapper -->
     <!-- Vendor js -->
     <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
 
     <!-- App js -->
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/datatables@1.10.18/media/js/jquery.dataTables.min.js"></script>
-
-    <script>
-        $('table').dataTable();
-    </script>
 </body>
 
 </html>

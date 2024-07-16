@@ -22,6 +22,7 @@ class CreateKonsumenTable extends Migration
             $table->string('ktp');
             $table->string('kartu_kendali');
             $table->string('status');
+            $table->string('kk');
             $table->timestamps();
         });
     }

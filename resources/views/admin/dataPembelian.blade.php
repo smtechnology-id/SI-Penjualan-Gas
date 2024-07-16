@@ -6,8 +6,7 @@
         <div class="container">
             <h3>Data Pembelian</h3>
             <hr>
-            <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#addDivision">Tambah
-                Pembelian</button>
+            <a href="{{ route('admin.addPembelian') }}" class="btn btn-primary mb-2">Tambah Pembelian</a>
             <table class="table table-borderless">
                 <thead>
                     <th>No</th>
@@ -15,24 +14,26 @@
                     <th>Tanggal</th>
                     <th>Barang</th>
                     <th>Jumlah</th>
-                    <th>Harga Jual</th>
+                    <th>Harga Beli</th>
                     <th>Total</th>
                     <th>Aksi</th>
                 </thead>
                 <tbody>
+                    @foreach($pembelians as $pembelian)
                     <tr>
-                        <td>1</td>
-                        <td>#123</td>
-                        <td>12 - 12 - 2024</td>
-                        <td>Gas Lpg 3 Kg</td>
-                        <td>12</td>
-                        <td>Rp. 22.000</td>
-                        <td>Rp. 264.000</td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $pembelian->kode_pembelian }}</td>
+                        <td>{{ $pembelian->tanggal }}</td>
+                        <td>{{ $pembelian->barang->nama_barang }}</td>
+                        <td>{{ $pembelian->jumlah }}</td>
+                        <td>Rp {{ number_format($pembelian->barang->harga_beli, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($pembelian->barang->harga_beli * $pembelian->jumlah, 0, ',', '.') }}</td>
                         <td>
-                            <a href="" class="btn btn-secondary">Update</a>
-                            <a href="" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('admin.updatePembelian', $pembelian->id) }}" class="btn btn-secondary">Update</a>
+                            <a href="{{ route('admin.deletePembelian', $pembelian->id) }}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
