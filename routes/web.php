@@ -15,9 +15,7 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
+Route::get('/', [AuthController::class, 'login'])->name('login');
 Route::post('/loginPost', [AuthController::class, 'loginPost'])->name('loginPost');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 

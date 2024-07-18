@@ -29,6 +29,7 @@
                                 @endforeach
                             </select>
                         </div>
+                       
                         <div class="form-group">
                             <label for="barang_id">Barang</label>
                             <select class="form-control" id="barang_id" name="barang_id" required>
@@ -41,6 +42,21 @@
                         <div class="form-group">
                             <label for="jumlah">Jumlah</label>
                             <input type="number" class="form-control" id="jumlah" name="jumlah" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" id="status_umkm" value="UMKM" required>
+                                <label class="form-check-label" for="status_umkm">
+                                    UMKM
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" id="status_rumah_tangga" value="Rumah Tangga" required>
+                                <label class="form-check-label" for="status_rumah_tangga">
+                                    Rumah Tangga
+                                </label>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>

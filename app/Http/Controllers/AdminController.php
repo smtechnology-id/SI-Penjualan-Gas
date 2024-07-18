@@ -210,6 +210,7 @@ class AdminController extends Controller
             'konsumen_id' => 'required|integer',
             'barang_id' => 'required|integer',
             'jumlah' => 'required|integer|min:1',
+            'status' => 'required|string',
         ]);
 
         $barang = Barang::findOrFail($request->barang_id);
@@ -228,7 +229,8 @@ class AdminController extends Controller
             'barang_id' => $request->barang_id,
             'jumlah' => $request->jumlah,
             'total' => $total_harga,
-            'status' => 'pending',
+            'status' => $request->status,
+
         ]);
 
         // Update stok barang

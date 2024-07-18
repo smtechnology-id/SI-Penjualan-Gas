@@ -6,7 +6,7 @@
     <div class="row">
         @foreach ($barang as $data)
             <div class="col-xxl-3 col-sm-4">
-                <div class="card widget-flat text-bg-purple">
+                <div class="card widget-flat" style="background: #C3FF47">
                     <div class="card-body">
                         <div class="float-end">
                             <img src="{{ asset('assets/images/gas.png') }}" alt="" srcset=""

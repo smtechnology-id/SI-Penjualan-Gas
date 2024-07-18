@@ -3,10 +3,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Dashboard Admin || SIPRAKTIF</title>
+    <title>Dashboard Admin || Pangkalan Gas LPG Eko Sumanto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Sistem Informasi Penanganan Penghentian Penuntutan Berdasarkan Keadilan Restoratif"
-        name="description" />
+    <meta content="Pangkalan Gas LPG Eko Sumanto" name="description" />
     <meta content="Smtechnology.id" name="author" />
 
     <!-- App favicon -->
@@ -190,9 +189,9 @@
                             <div class="page-title-box">
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Velonic</a></li>
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
-                                        <li class="breadcrumb-item active">Invoice</li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Fadhil Adhthoriq Febrianto
+                                        </a></li>
+                                      
                                     </ol>
                                 </div>
                                 <h4 class="page-title">@yield('title')</h4>
@@ -206,8 +205,8 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h3 class="text-center">Pangkalan Gas LPG Eko Sumanto</h3>
-                                    <p class="text-center">Alamat</p>
-                                    <p class="text-center">No Telp</p>
+                                    <p class="text-center">Alamat : Jl.Tp.Sriwijaya No71 Kel Beliung Kec.Alam Barojo Rt04</p>
+                                    <p class="text-center">No Telp : 085378565553</p>
                                     <p class="text-center">{{ $tanggal_sekarang }}</p>
                                     <br><br>
                                     <div class="row">
@@ -245,7 +244,7 @@
                         <div class="col-12 text-center">
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> © Velonic - Theme by <b>Techzaa</b>
+                            </script> Pangkalan Gas LPG Eko Sumanto</b>
                         </div>
                     </div>
                 </div>

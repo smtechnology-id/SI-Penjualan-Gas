@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Dashboard Admin || SIPRAKTIF</title>
+    <title>Dashboard Admin || Pangkalan Gas LPG Eko Sumanto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Sistem Informasi Penanganan Penghentian Penuntutan Berdasarkan Keadilan Restoratif" name="description" />
+    <meta content="Pangkalan Gas LPG Eko Sumanto" name="description" />
     <meta content="Smtechnology.id" name="author" />
 
     <!-- App favicon -->
@@ -230,7 +230,7 @@
                         <div class="col-12 text-center">
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> Developed With Love By SMTechnology.id</b>
+                            </script> Pangkalan Gas LPG Eko Sumanto</b>
                         </div>
                     </div>
                 </div>
